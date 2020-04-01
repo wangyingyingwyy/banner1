@@ -14,7 +14,7 @@ var $animate=(function () {
             '<span id="left"><</span>'+
             '<span id="right">></span>'+
             '<ul class="nav" id="navs">'+
-                '<li class="active">1</li>'+
+                '<li>1</li>'+
                 '<li>2</li>'+
                 '<li>3</li>'+
                 '<li>4</li>'+
@@ -23,10 +23,11 @@ var $animate=(function () {
     function show() {  
         var $box =$('#box') ;
         $box.append($html);
-        var $oNavlist = $('#navs').children('li');
+        var $oNavlist = $('#navs').children();
         var $slider = $('#slider');
         var $left=$('#left');
         var $right=$('#right');
+        $oNavlist[0].className='active'
         // 定时器自动轮播
         timer = setInterval(function(){
             next()
@@ -41,24 +42,23 @@ var $animate=(function () {
         })
         // 鼠标移入轮播图
         $box.mouseover(function(){
-			animate(left,{opacity:50})
-			animate(right,{opacity:50})
+			$left.css({'opacity':0.5});
+			$right.css({'opacity':0.5});
 			clearInterval(timer)
         })
         // 鼠标移出轮播图
 		$box.mouseout(function(){
-			animate(left,{opacity:0})
-			animate(right,{opacity:0})
+			$left.css({'opacity':0});
+			$right.css({'opacity':0});
 			timer = setInterval(function(){
                 next();
             },3000);
         })
         // 点击点点可以轮播
 		for( var i=0; i<$oNavlist.length; i++ ){
-			(function(i){
-				$oNavlist[i].onclick=function(){
-                    console.log(i)
-					index = i+1;
+			(function(j){
+				$oNavlist[j].onclick=function(){
+					index = j+1;
 					navmove();
 					animate(slider,{left:-1200*index});
 				}
